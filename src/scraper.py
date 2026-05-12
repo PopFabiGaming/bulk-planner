@@ -1,13 +1,7 @@
-"""Tilbuds-scraper.
+"""Tjek/eTilbudsavis tilbuds-scraper - ny, virkende version.
 
-Strategi:
-1. Forsøg Tjek (eTilbudsavis) JSON-endpoints — hurtigt, returnerer struktureret data.
-2. Hvis det fejler, fald tilbage til Playwright-render af tjek.com web-app.
-3. Hvis alt fejler, returner tom liste — main.py vil bruge default_price fra ingredients.json.
-
-VIGTIGT: Tjek har ingen officiel offentlig API. Endpointsene nedenfor er reverse-engineered fra
-den offentlige web-app, og kan ændre sig uden varsel. Hvis denne fil holder op med at virke,
-er det her du skal kigge først. Sæt LOG_LEVEL=DEBUG for at se rå svar.
+Bruger squid-api.tjek.com som er offentlig og ikke kraever API-key.
+Verificeret virkende: maj 2026.
 """
 from __future__ import annotations
 
@@ -22,29 +16,33 @@ import requests
 
 LOG = logging.getLogger("scraper")
 
-# Tjek's offentlige business-ids per kæde (kan ændres - tjek tjek.dk)
-# Disse IDs er fra Tjek's offentlige katalog. Verificer via deres web-app hvis noget brister.
-STORE_BUSINESS_IDS = {
-    "netto": "9ddArka",
-    "rema_1000": "27JOk4l",
-    "lidl": "11deSO",
-    "kvickly": "0c089a8",
-    "loevbjerg": "3596d52",
-    "365discount": "8da40a7",
+# Dealer-IDs verificeret mod tjek.com's API (maj 2026)
+# Find nye IDs ved: GET https://squid-api.tjek.com/v2/offers?r_lat=X&r_lng=Y&r_radius=Z&limit=100
+DEALER_IDS_BY_STORE_ID = {
+    "netto_odder": "9ba51",
+    "rema_odder": "11deC",
+    "lidl_odder": "71c90",
+    "loevbjerg_odder": "65caN",
+    "foetex_odder": "bdf5A",
+    "meny_odder": "267e1m",
+    "bilka_aarhus": "93f13",
+    "spar_odder": "33",
+    # Bemaerk: Kvickly og 365discount er ikke i Tjek's database for Odder-omraadet
 }
 
 TJEK_API_BASE = "https://squid-api.tjek.com"
+ODDER_LAT = 55.9755
+ODDER_LNG = 10.1538
 
 
 @dataclass
 class Offer:
-    """En enkelt vare på tilbud."""
-    store_id: str        # fx "netto_odder"
-    store_name: str      # fx "Netto"
-    product_name: str    # rå navn fra tilbudsavisen
-    price_kr: float      # pris i kr
-    quantity_grams: float | None = None  # vægt hvis kendt (kan være None)
-    quantity_units: int | None = None    # antal stk hvis kendt
+    store_id: str
+    store_name: str
+    product_name: str
+    price_kr: float
+    quantity_grams: float | None = None
+    quantity_units: int | None = None
     per_kg_kr: float | None = None
     valid_from: str = ""
     valid_to: str = ""
@@ -62,10 +60,7 @@ class TjekScraper:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.session = requests.Session()
         self.session.headers.update({
-            "User-Agent": (
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
-            ),
+            "User-Agent": "Mozilla/5.0 (compatible; bulk-planner/1.0)",
             "Accept": "application/json",
         })
 
@@ -77,95 +72,112 @@ class TjekScraper:
 
     def _cache_set(self, key: str, data: Any) -> None:
         f = self.cache_dir / f"{key}.json"
-        f.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        try:
+            f.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        except OSError as e:
+            LOG.warning("Cache write fejlede: %s", e)
 
-    def fetch_offers_for_store(self, store_key: str, cache_ttl: int = 3600) -> list[Offer]:
-        """Henter aktuelle tilbud for en kæde. store_key er en nøgle i STORE_BUSINESS_IDS."""
-        biz_id = STORE_BUSINESS_IDS.get(store_key)
-        if not biz_id:
-            LOG.warning("Ukendt store_key: %s", store_key)
-            return []
-
-        cache_key = f"offers_{store_key}"
+    def fetch_offers_for_dealer(self, dealer_id: str, dealer_label: str,
+                                 lat: float = ODDER_LAT, lng: float = ODDER_LNG,
+                                 radius_m: int = 30000, cache_ttl: int = 3600) -> list[Offer]:
+        """Henter ALLE tilbud for én butik (pagineret)."""
+        cache_key = f"offers_{dealer_id}"
         cached = self._cache_get(cache_key, ttl=cache_ttl)
         if cached is not None:
-            LOG.info("Cache hit for %s (%d offers)", store_key, len(cached))
+            LOG.info("Cache hit for %s (%d tilbud)", dealer_label, len(cached))
             return [Offer(**o) for o in cached]
 
-        # Tjek's offentlige catalog endpoint
-        url = f"{TJEK_API_BASE}/v2/offers"
-        params = {
-            "dealer_ids": biz_id,
-            "r_lat": "55.9755",   # Odder
-            "r_lng": "10.1538",
-            "r_radius": "30000",  # 30 km
-            "limit": "400",
-        }
         offers: list[Offer] = []
-        try:
-            r = self.session.get(url, params=params, timeout=15)
-            r.raise_for_status()
-            data = r.json()
-            for item in data if isinstance(data, list) else data.get("offers", []):
-                heading = item.get("heading") or item.get("name") or ""
-                price = (item.get("pricing") or {}).get("price") or item.get("price")
-                if not heading or price is None:
-                    continue
-                qty = (item.get("quantity") or {})
-                size = qty.get("size") or {}
-                unit = qty.get("unit") or {}
-                grams = self._to_grams(size.get("from"), unit.get("symbol"))
+        for offset in range(0, 1000, 100):
+            url = f"{TJEK_API_BASE}/v2/offers"
+            params = {
+                "dealer_ids": dealer_id,
+                "r_lat": lat,
+                "r_lng": lng,
+                "r_radius": radius_m,
+                "limit": 100,
+                "offset": offset,
+            }
+            try:
+                r = self.session.get(url, params=params, timeout=20)
+                if r.status_code != 200:
+                    LOG.warning("%s HTTP %d ved offset %d: %s",
+                                dealer_label, r.status_code, offset, r.text[:200])
+                    break
+                page = r.json()
+                if not isinstance(page, list) or not page:
+                    break
+                for item in page:
+                    offer = self._parse_item(item, dealer_label)
+                    if offer:
+                        offers.append(offer)
+                if len(page) < 100:
+                    break
+            except Exception as e:  # noqa: BLE001
+                LOG.warning("%s fejl ved offset %d: %s", dealer_label, offset, e)
+                break
 
-                offer = Offer(
-                    store_id=store_key,
-                    store_name=store_key,
-                    product_name=heading,
-                    price_kr=float(price),
-                    quantity_grams=grams,
-                    valid_from=item.get("run_from", ""),
-                    valid_to=item.get("run_till", ""),
-                    raw=item,
-                )
-                if grams and grams > 0:
-                    offer.per_kg_kr = round(offer.price_kr / (grams / 1000), 2)
-                offers.append(offer)
-        except Exception as e:  # noqa: BLE001
-            LOG.warning("Tjek API fejlede for %s: %s — bruger tom liste", store_key, e)
-            return []
-
+        LOG.info("Hentet %d tilbud for %s", len(offers), dealer_label)
         self._cache_set(cache_key, [o.to_dict() for o in offers])
-        LOG.info("Hentet %d tilbud for %s", len(offers), store_key)
         return offers
 
     @staticmethod
-    def _to_grams(value: Any, unit: str | None) -> float | None:
-        if value is None or unit is None:
+    def _parse_item(item: dict, dealer_label: str) -> Offer | None:
+        heading = item.get("heading")
+        pricing = item.get("pricing") or {}
+        price = pricing.get("price")
+        if not heading or price is None:
             return None
-        try:
-            v = float(value)
-        except (TypeError, ValueError):
-            return None
-        u = (unit or "").lower()
-        if u in ("kg",):
-            return v * 1000
-        if u in ("g", "gr"):
-            return v
-        if u in ("l", "liter"):
-            return v * 1000   # antag tæthed 1 (fint approks for de fleste varer)
-        if u in ("ml",):
-            return v
-        return None
+        dealer = item.get("dealer") or {}
+        store_name = dealer.get("name") or dealer_label
+        qty = item.get("quantity") or {}
+        unit = qty.get("unit") or {}
+        size = qty.get("size") or {}
+        pieces = qty.get("pieces") or {}
+
+        # Total maengde i SI-enheder (kg eller liter typisk)
+        si = unit.get("si") or {}
+        si_symbol = (si.get("symbol") or "").lower()
+        si_factor = si.get("factor") or 1
+        size_from = size.get("from")
+        pieces_from = pieces.get("from") or 1
+
+        quantity_grams: float | None = None
+        per_kg: float | None = None
+
+        if size_from is not None and isinstance(size_from, (int, float)):
+            total_in_si = size_from * si_factor * pieces_from
+            if si_symbol == "kg":
+                quantity_grams = total_in_si * 1000
+            elif si_symbol == "l":
+                quantity_grams = total_in_si * 1000  # antag taethed ~1 for de fleste varer
+            # pcs (styk) springer vi over - kan ikke regne kg-pris
+
+            if quantity_grams and quantity_grams > 0:
+                per_kg = round(float(price) / (quantity_grams / 1000), 2)
+
+        return Offer(
+            store_id=dealer.get("id", ""),
+            store_name=store_name,
+            product_name=heading,
+            price_kr=float(price),
+            quantity_grams=quantity_grams,
+            quantity_units=pieces_from if si_symbol == "pcs" else None,
+            per_kg_kr=per_kg,
+            valid_from=item.get("run_from", ""),
+            valid_to=item.get("run_till", ""),
+            raw=None,  # Spar plads i cache
+        )
 
 
 def load_mock_offers(path: Path) -> list[Offer]:
-    """Til test: indlæs tilbud fra en JSON-fil."""
     data = json.loads(path.read_text(encoding="utf-8"))
     return [Offer(**o) for o in data]
 
 
 def fetch_all_offers(stores: list[dict], use_mock: bool = False, cache_ttl: int = 3600,
                      mock_path: Path | None = None) -> list[Offer]:
-    """Top-level entry: returnér tilbud fra alle butikker i config."""
+    """Top-level entry: returner tilbud fra alle butikker i config."""
     if use_mock and mock_path and mock_path.exists():
         LOG.info("Bruger mock-data fra %s", mock_path)
         return load_mock_offers(mock_path)
@@ -173,7 +185,18 @@ def fetch_all_offers(stores: list[dict], use_mock: bool = False, cache_ttl: int 
     scraper = TjekScraper()
     all_offers: list[Offer] = []
     for store in stores:
-        # store.id i config er fx "netto_odder" → vi mapper til Tjek's nøgler
-        store_key = store["id"].split("_")[0]
-        all_offers.extend(scraper.fetch_offers_for_store(store_key, cache_ttl=cache_ttl))
+        store_id = store["id"]
+        # Map fra config store_id (fx 'netto_odder') til dealer-key i DEALER_IDS
+        dealer_id_lookup = DEALER_IDS_BY_STORE_ID.get(store_id)
+        if not dealer_id_lookup:
+            LOG.info("Springer over %s (ikke i Tjek's database for omraadet)", store["name"])
+            continue
+        dealer_id = dealer_id_lookup
+        # Bevar config's store_id paa offers saa de matches korrekt nedstroms
+        offers = scraper.fetch_offers_for_dealer(dealer_id, store["name"], cache_ttl=cache_ttl)
+        for o in offers:
+            o.store_id = store_id  # overskriv med config-id
+        all_offers.extend(offers)
+
+    LOG.info("I alt %d tilbud fra %d butikker", len(all_offers), len(stores))
     return all_offers
