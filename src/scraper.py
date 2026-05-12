@@ -16,8 +16,6 @@ import requests
 
 LOG = logging.getLogger("scraper")
 
-# Dealer-IDs verificeret mod tjek.com's API (maj 2026)
-# Find nye IDs ved: GET https://squid-api.tjek.com/v2/offers?r_lat=X&r_lng=Y&r_radius=Z&limit=100
 DEALER_IDS_BY_STORE_ID = {
     "netto_odder": "9ba51",
     "rema_odder": "11deC",
@@ -27,7 +25,6 @@ DEALER_IDS_BY_STORE_ID = {
     "meny_odder": "267e1m",
     "bilka_aarhus": "93f13",
     "spar_odder": "33",
-    # Bemaerk: Kvickly og 365discount er ikke i Tjek's database for Odder-omraadet
 }
 
 TJEK_API_BASE = "https://squid-api.tjek.com"
@@ -64,56 +61,51 @@ class TjekScraper:
             "Accept": "application/json",
         })
 
-    def _cache_get(self, key: str, ttl: int = 3600) -> Any | None:
+    def _cache_get(self, key: str, ttl: int = 3600):
         f = self.cache_dir / f"{key}.json"
         if f.exists() and (time.time() - f.stat().st_mtime) < ttl:
             return json.loads(f.read_text(encoding="utf-8"))
         return None
 
-    def _cache_set(self, key: str, data: Any) -> None:
+    def _cache_set(self, key: str, data):
         f = self.cache_dir / f"{key}.json"
         try:
             f.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
         except OSError as e:
             LOG.warning("Cache write fejlede: %s", e)
 
-    def fetch_offers_for_dealer(self, dealer_id: str, dealer_label: str,
-                                 lat: float = ODDER_LAT, lng: float = ODDER_LNG,
-                                 radius_m: int = 30000, cache_ttl: int = 3600) -> list[Offer]:
-        """Henter ALLE tilbud for én butik (pagineret)."""
+    def fetch_offers_for_dealer(self, dealer_id, dealer_label,
+                                 lat=ODDER_LAT, lng=ODDER_LNG,
+                                 radius_m=30000, cache_ttl=3600):
         cache_key = f"offers_{dealer_id}"
         cached = self._cache_get(cache_key, ttl=cache_ttl)
         if cached is not None:
             LOG.info("Cache hit for %s (%d tilbud)", dealer_label, len(cached))
             return [Offer(**o) for o in cached]
 
-        offers: list[Offer] = []
+        offers = []
         for offset in range(0, 1000, 100):
             url = f"{TJEK_API_BASE}/v2/offers"
             params = {
                 "dealer_ids": dealer_id,
-                "r_lat": lat,
-                "r_lng": lng,
-                "r_radius": radius_m,
-                "limit": 100,
-                "offset": offset,
+                "r_lat": lat, "r_lng": lng, "r_radius": radius_m,
+                "limit": 100, "offset": offset,
             }
             try:
                 r = self.session.get(url, params=params, timeout=20)
                 if r.status_code != 200:
-                    LOG.warning("%s HTTP %d ved offset %d: %s",
-                                dealer_label, r.status_code, offset, r.text[:200])
+                    LOG.warning("%s HTTP %d: %s", dealer_label, r.status_code, r.text[:200])
                     break
                 page = r.json()
                 if not isinstance(page, list) or not page:
                     break
                 for item in page:
-                    offer = self._parse_item(item, dealer_label)
-                    if offer:
-                        offers.append(offer)
+                    o = self._parse_item(item, dealer_label)
+                    if o:
+                        offers.append(o)
                 if len(page) < 100:
                     break
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 LOG.warning("%s fejl ved offset %d: %s", dealer_label, offset, e)
                 break
 
@@ -122,11 +114,12 @@ class TjekScraper:
         return offers
 
     @staticmethod
-    def _parse_item(item: dict, dealer_label: str) -> Offer | None:
+    def _parse_item(item, dealer_label):
         heading = item.get("heading")
         pricing = item.get("pricing") or {}
         price = pricing.get("price")
-        if not heading or price is None:
+        # Skip gratis-tilbud og data-fejl
+        if not heading or price is None or not isinstance(price, (int, float)) or price <= 0:
             return None
         dealer = item.get("dealer") or {}
         store_name = dealer.get("name") or dealer_label
@@ -135,26 +128,37 @@ class TjekScraper:
         size = qty.get("size") or {}
         pieces = qty.get("pieces") or {}
 
-        # Total maengde i SI-enheder (kg eller liter typisk)
         si = unit.get("si") or {}
         si_symbol = (si.get("symbol") or "").lower()
         si_factor = si.get("factor") or 1
+        unit_symbol = (unit.get("symbol") or "").lower()
         size_from = size.get("from")
         pieces_from = pieces.get("from") or 1
 
-        quantity_grams: float | None = None
-        per_kg: float | None = None
+        quantity_grams = None
+        per_kg = None
 
         if size_from is not None and isinstance(size_from, (int, float)):
             total_in_si = size_from * si_factor * pieces_from
             if si_symbol == "kg":
                 quantity_grams = total_in_si * 1000
             elif si_symbol == "l":
-                quantity_grams = total_in_si * 1000  # antag taethed ~1 for de fleste varer
-            # pcs (styk) springer vi over - kan ikke regne kg-pris
+                quantity_grams = total_in_si * 1000
+
+            # Tjek-data har en bug: nogle gange er unit_symbol="kg" mens size er i gram
+            # (fx rugbroed 850 'kg' i stedet for 850 g). Hvis "vaegten" > 50 kg er det
+            # naesten sikkert data-fejl - antag det er gram.
+            if quantity_grams and quantity_grams > 50000 and unit_symbol == "kg":
+                quantity_grams = quantity_grams / 1000
 
             if quantity_grams and quantity_grams > 0:
                 per_kg = round(float(price) / (quantity_grams / 1000), 2)
+
+            # Sanity-check: kg-priser under 0.50 kr er naesten sikkert data-fejl.
+            # Ignorer for at undgaa at tilbudet "vinder" alle sammenligninger.
+            if per_kg is not None and per_kg < 0.5:
+                per_kg = None
+                quantity_grams = None
 
         return Offer(
             store_id=dealer.get("id", ""),
@@ -166,36 +170,31 @@ class TjekScraper:
             per_kg_kr=per_kg,
             valid_from=item.get("run_from", ""),
             valid_to=item.get("run_till", ""),
-            raw=None,  # Spar plads i cache
+            raw=None,
         )
 
 
-def load_mock_offers(path: Path) -> list[Offer]:
+def load_mock_offers(path):
     data = json.loads(path.read_text(encoding="utf-8"))
     return [Offer(**o) for o in data]
 
 
-def fetch_all_offers(stores: list[dict], use_mock: bool = False, cache_ttl: int = 3600,
-                     mock_path: Path | None = None) -> list[Offer]:
-    """Top-level entry: returner tilbud fra alle butikker i config."""
+def fetch_all_offers(stores, use_mock=False, cache_ttl=3600, mock_path=None):
     if use_mock and mock_path and mock_path.exists():
         LOG.info("Bruger mock-data fra %s", mock_path)
         return load_mock_offers(mock_path)
 
     scraper = TjekScraper()
-    all_offers: list[Offer] = []
+    all_offers = []
     for store in stores:
         store_id = store["id"]
-        # Map fra config store_id (fx 'netto_odder') til dealer-key i DEALER_IDS
-        dealer_id_lookup = DEALER_IDS_BY_STORE_ID.get(store_id)
-        if not dealer_id_lookup:
-            LOG.info("Springer over %s (ikke i Tjek's database for omraadet)", store["name"])
+        dealer_id = DEALER_IDS_BY_STORE_ID.get(store_id)
+        if not dealer_id:
+            LOG.info("Springer over %s (ikke i Tjek for omraadet)", store["name"])
             continue
-        dealer_id = dealer_id_lookup
-        # Bevar config's store_id paa offers saa de matches korrekt nedstroms
         offers = scraper.fetch_offers_for_dealer(dealer_id, store["name"], cache_ttl=cache_ttl)
         for o in offers:
-            o.store_id = store_id  # overskriv med config-id
+            o.store_id = store_id
         all_offers.extend(offers)
 
     LOG.info("I alt %d tilbud fra %d butikker", len(all_offers), len(stores))
