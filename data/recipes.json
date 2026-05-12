@@ -1,0 +1,204 @@
+{
+  "recipes": [
+    {
+      "id": "kylling_ris_boenner",
+      "name": "Kylling med ris og bønner",
+      "tags": ["meal_prep", "kylling", "billig"],
+      "portions": 4,
+      "prep_minutes": 25,
+      "ingredients": [
+        {"key": "kyllingebryst", "grams": 600, "swaps": ["kyllingelaar", "hakket_kylling", "hakket_kalkun"]},
+        {"key": "ris", "grams": 400, "swaps": ["pasta", "kartofler"]},
+        {"key": "kidneyboenner_dasee", "grams": 400, "swaps": ["sorte_boenner", "hvide_boenner"]},
+        {"key": "tomatsauce", "grams": 400, "swaps": ["hakkede_tomater"]},
+        {"key": "loeg", "grams": 100, "swaps": []},
+        {"key": "olie", "grams": 20, "swaps": []},
+        {"key": "krydderier", "grams": 10, "swaps": []}
+      ],
+      "per_portion": {"kcal": 620, "protein_g": 48, "carbs_g": 80, "fat_g": 8},
+      "instructions": "Skær kylling i tern, brun i olie. Tilsæt hakket løg, krydderier. Tilsæt tomatsauce og bønner, simr 10 min. Server med kogt ris. Lav stor portion søndag, varm op resten af ugen."
+    },
+    {
+      "id": "bolognese_pasta",
+      "name": "Hakket kød bolognese med pasta",
+      "tags": ["meal_prep", "oksekoed", "billig"],
+      "portions": 4,
+      "prep_minutes": 30,
+      "ingredients": [
+        {"key": "hakket_oksekoed", "grams": 500, "swaps": ["hakket_svin", "hakket_kalkun", "hakket_kylling"]},
+        {"key": "pasta", "grams": 500, "swaps": ["ris", "kartofler"]},
+        {"key": "hakkede_tomater", "grams": 800, "swaps": ["tomatsauce"]},
+        {"key": "loeg", "grams": 200, "swaps": []},
+        {"key": "gulerod", "grams": 200, "swaps": []},
+        {"key": "olie", "grams": 20, "swaps": []},
+        {"key": "ost_revet", "grams": 100, "swaps": []}
+      ],
+      "per_portion": {"kcal": 680, "protein_g": 42, "carbs_g": 85, "fat_g": 18},
+      "instructions": "Brun kød i gryde. Tilsæt hakket løg og gulerod, steg 5 min. Tilsæt tomater, simr 20 min. Server over kogt pasta med revet ost."
+    },
+    {
+      "id": "overnight_oats_pb",
+      "name": "Overnight oats med peanutbutter og banan",
+      "tags": ["morgenmad", "no_cook", "billig"],
+      "portions": 1,
+      "prep_minutes": 5,
+      "ingredients": [
+        {"key": "havregryn", "grams": 100, "swaps": []},
+        {"key": "maelk", "grams": 250, "swaps": ["skyr", "ymer"]},
+        {"key": "peanutbutter", "grams": 30, "swaps": []},
+        {"key": "banan", "grams": 120, "swaps": []},
+        {"key": "proteinpulver", "grams": 30, "swaps": []}
+      ],
+      "per_portion": {"kcal": 780, "protein_g": 48, "carbs_g": 90, "fat_g": 22},
+      "instructions": "Bland alt i et glas aftenen før. Stil i køleskab. Spis næste morgen. Gentag 5-7 dage i træk."
+    },
+    {
+      "id": "skyr_havregryn_bowl",
+      "name": "Skyrbowl med havregryn og frugt",
+      "tags": ["morgenmad", "no_cook", "billig"],
+      "portions": 1,
+      "prep_minutes": 5,
+      "ingredients": [
+        {"key": "skyr", "grams": 400, "swaps": ["ymer", "kvark"]},
+        {"key": "havregryn", "grams": 80, "swaps": []},
+        {"key": "banan", "grams": 120, "swaps": ["aebler", "frosne_baer"]},
+        {"key": "honning", "grams": 15, "swaps": ["sukker"]}
+      ],
+      "per_portion": {"kcal": 620, "protein_g": 48, "carbs_g": 92, "fat_g": 5},
+      "instructions": "Hæld skyr i skål. Drys havregryn over. Top med skåret banan og honning."
+    },
+    {
+      "id": "tun_pasta_creme",
+      "name": "Tunpasta med creme fraiche",
+      "tags": ["meal_prep", "fisk", "hurtig"],
+      "portions": 4,
+      "prep_minutes": 20,
+      "ingredients": [
+        {"key": "pasta", "grams": 500, "swaps": []},
+        {"key": "tun_dase", "grams": 480, "swaps": []},
+        {"key": "creme_fraiche", "grams": 400, "swaps": ["yoghurt_naturel"]},
+        {"key": "loeg", "grams": 100, "swaps": []},
+        {"key": "majs_dase", "grams": 200, "swaps": ["aerter_frosne"]},
+        {"key": "krydderier", "grams": 10, "swaps": []}
+      ],
+      "per_portion": {"kcal": 690, "protein_g": 42, "carbs_g": 88, "fat_g": 16},
+      "instructions": "Kog pasta. Bland drænet tun, creme fraiche, hakket løg, majs og krydderier. Vend i pastaen. Serveres varm eller kold."
+    },
+    {
+      "id": "kyllingelaar_kartofler",
+      "name": "Bagt kyllingelår med kartofler",
+      "tags": ["meal_prep", "kylling", "ovn"],
+      "portions": 4,
+      "prep_minutes": 45,
+      "ingredients": [
+        {"key": "kyllingelaar", "grams": 1000, "swaps": ["kyllingebryst"]},
+        {"key": "kartofler", "grams": 800, "swaps": []},
+        {"key": "gulerod", "grams": 300, "swaps": []},
+        {"key": "olie", "grams": 30, "swaps": []},
+        {"key": "krydderier", "grams": 10, "swaps": []}
+      ],
+      "per_portion": {"kcal": 720, "protein_g": 52, "carbs_g": 60, "fat_g": 28},
+      "instructions": "Skær kartofler og gulerod i tern. Læg sammen med kyllingelår på bageplade. Pensl med olie, drys krydderier. Bag 40 min ved 200°C."
+    },
+    {
+      "id": "aeggekage_skinke",
+      "name": "Æggekage med skinke og rugbrød",
+      "tags": ["hurtig", "aeg", "billig"],
+      "portions": 2,
+      "prep_minutes": 15,
+      "ingredients": [
+        {"key": "aeg", "grams": 300, "swaps": []},
+        {"key": "maelk", "grams": 50, "swaps": []},
+        {"key": "skinke", "grams": 150, "swaps": ["bacon", "kylling_skiver"]},
+        {"key": "rugbroed", "grams": 200, "swaps": []},
+        {"key": "smoer", "grams": 20, "swaps": []}
+      ],
+      "per_portion": {"kcal": 620, "protein_g": 42, "carbs_g": 48, "fat_g": 28},
+      "instructions": "Pisk æg og mælk. Steg skinke i pande. Hæld æg over, lad stivne. Server med rugbrød."
+    },
+    {
+      "id": "kyllingewok_ris",
+      "name": "Kyllingewok med soja og ris",
+      "tags": ["hurtig", "kylling"],
+      "portions": 3,
+      "prep_minutes": 20,
+      "ingredients": [
+        {"key": "kyllingebryst", "grams": 500, "swaps": ["hakket_kalkun", "hakket_kylling"]},
+        {"key": "ris", "grams": 350, "swaps": ["nudler"]},
+        {"key": "frosne_groenter", "grams": 400, "swaps": []},
+        {"key": "soja", "grams": 30, "swaps": []},
+        {"key": "olie", "grams": 20, "swaps": []},
+        {"key": "hvidloeg", "grams": 10, "swaps": []}
+      ],
+      "per_portion": {"kcal": 640, "protein_g": 48, "carbs_g": 82, "fat_g": 10},
+      "instructions": "Skær kylling i strimler. Steg hurtigt i wok med hvidløg. Tilsæt grøntsager, steg 5 min. Tilsæt soja. Server over ris."
+    },
+    {
+      "id": "burrito_bowl",
+      "name": "Burrito bowl med hakket kød og bønner",
+      "tags": ["meal_prep", "kraftig"],
+      "portions": 4,
+      "prep_minutes": 25,
+      "ingredients": [
+        {"key": "hakket_oksekoed", "grams": 500, "swaps": ["hakket_svin", "hakket_kalkun"]},
+        {"key": "ris", "grams": 400, "swaps": []},
+        {"key": "kidneyboenner_dasee", "grams": 400, "swaps": ["sorte_boenner"]},
+        {"key": "majs_dase", "grams": 200, "swaps": []},
+        {"key": "ost_revet", "grams": 150, "swaps": []},
+        {"key": "loeg", "grams": 100, "swaps": []},
+        {"key": "krydderier", "grams": 15, "swaps": []}
+      ],
+      "per_portion": {"kcal": 720, "protein_g": 46, "carbs_g": 88, "fat_g": 16},
+      "instructions": "Brun kød med løg og krydderier (paprika, spidskommen, chili). Tilsæt bønner og majs. Server over ris med revet ost."
+    },
+    {
+      "id": "cottage_havregryn",
+      "name": "Cottage cheese bowl med havregryn",
+      "tags": ["morgenmad", "no_cook", "highprotein"],
+      "portions": 1,
+      "prep_minutes": 5,
+      "ingredients": [
+        {"key": "cottage_cheese", "grams": 300, "swaps": ["skyr"]},
+        {"key": "havregryn", "grams": 80, "swaps": []},
+        {"key": "banan", "grams": 120, "swaps": []},
+        {"key": "peanutbutter", "grams": 20, "swaps": []}
+      ],
+      "per_portion": {"kcal": 700, "protein_g": 50, "carbs_g": 80, "fat_g": 18},
+      "instructions": "Bland cottage cheese, havregryn, skåret banan og peanutbutter. Spis."
+    },
+    {
+      "id": "hakket_kalkun_curry",
+      "name": "Hakket kalkun curry med ris",
+      "tags": ["meal_prep", "kalkun"],
+      "portions": 4,
+      "prep_minutes": 25,
+      "ingredients": [
+        {"key": "hakket_kalkun", "grams": 500, "swaps": ["hakket_kylling", "hakket_svin"]},
+        {"key": "ris", "grams": 400, "swaps": []},
+        {"key": "kokosmaelk", "grams": 400, "swaps": ["creme_fraiche"]},
+        {"key": "frosne_groenter", "grams": 300, "swaps": []},
+        {"key": "loeg", "grams": 100, "swaps": []},
+        {"key": "karrypulver", "grams": 15, "swaps": []},
+        {"key": "olie", "grams": 20, "swaps": []}
+      ],
+      "per_portion": {"kcal": 700, "protein_g": 40, "carbs_g": 78, "fat_g": 24},
+      "instructions": "Brun kalkun med løg. Tilsæt karry, steg 1 min. Tilsæt kokosmælk og frosne grøntsager, simr 10 min. Server over ris."
+    },
+    {
+      "id": "tun_aeg_rugbroed",
+      "name": "Tunmousse på rugbrød med æg",
+      "tags": ["frokost", "no_cook", "billig"],
+      "portions": 1,
+      "prep_minutes": 10,
+      "ingredients": [
+        {"key": "tun_dase", "grams": 160, "swaps": []},
+        {"key": "rugbroed", "grams": 150, "swaps": []},
+        {"key": "aeg", "grams": 100, "swaps": []},
+        {"key": "mayonnaise", "grams": 20, "swaps": ["creme_fraiche"]},
+        {"key": "loeg", "grams": 20, "swaps": []}
+      ],
+      "per_portion": {"kcal": 620, "protein_g": 48, "carbs_g": 52, "fat_g": 22},
+      "instructions": "Kog æg 8 min. Bland drænet tun, mayonnaise og hakket løg. Smør på rugbrød. Top med skåret æg."
+    }
+  ]
+}

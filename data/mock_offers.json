@@ -1,0 +1,16 @@
+[
+  {"store_id": "netto_odder", "store_name": "Netto", "product_name": "Hakket oksekød 5-10%", "price_kr": 25.0, "quantity_grams": 500, "per_kg_kr": 50.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "netto_odder", "store_name": "Netto", "product_name": "Kyllingebryst", "price_kr": 55.0, "quantity_grams": 800, "per_kg_kr": 68.75, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "netto_odder", "store_name": "Netto", "product_name": "Skyr naturel", "price_kr": 14.0, "quantity_grams": 1000, "per_kg_kr": 14.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "rema_odder", "store_name": "Rema 1000", "product_name": "Kyllingelår", "price_kr": 35.0, "quantity_grams": 1000, "per_kg_kr": 35.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "rema_odder", "store_name": "Rema 1000", "product_name": "Havregryn fine", "price_kr": 8.0, "quantity_grams": 1000, "per_kg_kr": 8.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "rema_odder", "store_name": "Rema 1000", "product_name": "Pasta spaghetti", "price_kr": 7.0, "quantity_grams": 1000, "per_kg_kr": 7.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "lidl_odder", "store_name": "Lidl", "product_name": "Æg 10 stk frilandshøns", "price_kr": 19.0, "quantity_grams": 600, "per_kg_kr": 31.67, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "lidl_odder", "store_name": "Lidl", "product_name": "Ris basmati", "price_kr": 15.0, "quantity_grams": 1000, "per_kg_kr": 15.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "lidl_odder", "store_name": "Lidl", "product_name": "Tun i vand 4-pack", "price_kr": 22.0, "quantity_grams": 400, "per_kg_kr": 55.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "kvickly_odder", "store_name": "Kvickly", "product_name": "Hakket kalkun 3%", "price_kr": 30.0, "quantity_grams": 500, "per_kg_kr": 60.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "kvickly_odder", "store_name": "Kvickly", "product_name": "Kidneybønner dåse", "price_kr": 6.0, "quantity_grams": 400, "per_kg_kr": 15.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "loevbjerg_odder", "store_name": "Løvbjerg", "product_name": "Cottage cheese", "price_kr": 10.0, "quantity_grams": 450, "per_kg_kr": 22.22, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "loevbjerg_odder", "store_name": "Løvbjerg", "product_name": "Peanutbutter creamy", "price_kr": 20.0, "quantity_grams": 500, "per_kg_kr": 40.0, "valid_from": "", "valid_to": "", "raw": null},
+  {"store_id": "loevbjerg_odder", "store_name": "Løvbjerg", "product_name": "Rugbrød", "price_kr": 15.0, "quantity_grams": 1000, "per_kg_kr": 15.0, "valid_from": "", "valid_to": "", "raw": null}
+]

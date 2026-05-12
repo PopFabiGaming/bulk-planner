@@ -1,0 +1,50 @@
+# Bulk-planner konfiguration
+# Juster disse værdier til dine personlige mål.
+
+user:
+  name: "Fabian"
+  bodyweight_kg: 70
+  age: 19
+
+targets:
+  daily_kcal: 2900
+  daily_protein_g: 140
+  weekly_budget_kr: 420
+  kcal_tolerance_pct: 8
+  protein_tolerance_pct: 10
+
+plan:
+  recipes_per_week: 4
+  meals_per_day: 3
+  max_repeats_per_recipe: 9
+  max_stores: 2
+
+stores:
+  - {id: "netto_odder", name: "Netto Odder", priority: 1}
+  - {id: "loevbjerg_odder", name: "Løvbjerg Odder", priority: 2}
+  - {id: "kvickly_odder", name: "Kvickly Odder", priority: 3}
+  - {id: "rema_odder", name: "Rema 1000 Odder", priority: 4}
+  - {id: "lidl_odder", name: "Lidl Odder", priority: 5}
+  - {id: "discount365_aarhus", name: "365discount", priority: 99}
+
+restrictions:
+  exclude_ingredients: []
+  diet: "alt"
+
+output:
+  onedrive_folder: "/My Vault/4 - Life/Madplan"
+  filename_template: "Madplan-uge-{week}-{year}.md"
+
+scraping:
+  days_ahead: 7
+  use_mock: false
+  cache_ttl_seconds: 3600
+
+ai:
+  enabled: true
+  provider: "gemini"
+  model: "gemini-1.5-flash"
+
+notifications:
+  email_enabled: true
+  email_to: "fabian.schiemann@gmail.com"

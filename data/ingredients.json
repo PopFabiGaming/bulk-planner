@@ -1,0 +1,355 @@
+{
+  "comment": "Master-data over ingredienser. 'default_price_per_kg' bruges hvis ingen tilbud findes. Makro-data per 100g.",
+  "ingredients": {
+    "kyllingebryst": {
+      "display": "Kyllingebryst",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 110, "protein_g": 23, "carbs_g": 0, "fat_g": 2},
+      "default_price_per_kg": 75,
+      "search_terms": ["kyllingebryst", "kyllingefilet", "kylling inderfilet"]
+    },
+    "kyllingelaar": {
+      "display": "Kyllingelår",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 180, "protein_g": 19, "carbs_g": 0, "fat_g": 12},
+      "default_price_per_kg": 40,
+      "search_terms": ["kyllingelår", "kyllingeoverlår", "kyllingeunderlår"]
+    },
+    "hakket_kylling": {
+      "display": "Hakket kylling",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 140, "protein_g": 21, "carbs_g": 0, "fat_g": 6},
+      "default_price_per_kg": 65,
+      "search_terms": ["hakket kylling", "kyllingehakkekød"]
+    },
+    "hakket_kalkun": {
+      "display": "Hakket kalkun",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 140, "protein_g": 22, "carbs_g": 0, "fat_g": 5},
+      "default_price_per_kg": 65,
+      "search_terms": ["hakket kalkun", "kalkunhakkekød"]
+    },
+    "hakket_oksekoed": {
+      "display": "Hakket oksekød 5-10%",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 145, "protein_g": 21, "carbs_g": 0, "fat_g": 7},
+      "default_price_per_kg": 60,
+      "search_terms": ["hakket oksekød", "hakket okse", "okse 5-10%"]
+    },
+    "hakket_svin": {
+      "display": "Hakket svinekød",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 200, "protein_g": 18, "carbs_g": 0, "fat_g": 15},
+      "default_price_per_kg": 45,
+      "search_terms": ["hakket svinekød", "hakket svin"]
+    },
+    "aeg": {
+      "display": "Æg",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 155, "protein_g": 13, "carbs_g": 1, "fat_g": 11},
+      "default_price_per_kg": 30,
+      "search_terms": ["æg", "økologiske æg", "skrabeæg"]
+    },
+    "tun_dase": {
+      "display": "Tun i vand (dåse)",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 110, "protein_g": 25, "carbs_g": 0, "fat_g": 1},
+      "default_price_per_kg": 80,
+      "search_terms": ["tun i vand", "tun i olie", "tunbidder"]
+    },
+    "skinke": {
+      "display": "Skinke i skiver",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 110, "protein_g": 20, "carbs_g": 1, "fat_g": 3},
+      "default_price_per_kg": 80,
+      "search_terms": ["skinke", "skinkeskiver"]
+    },
+    "bacon": {
+      "display": "Bacon",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 350, "protein_g": 14, "carbs_g": 0, "fat_g": 32},
+      "default_price_per_kg": 70,
+      "search_terms": ["bacon", "bacon i tern"]
+    },
+    "skyr": {
+      "display": "Skyr",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 60, "protein_g": 11, "carbs_g": 4, "fat_g": 0.2},
+      "default_price_per_kg": 25,
+      "search_terms": ["skyr", "skyr naturel"]
+    },
+    "ymer": {
+      "display": "Ymer",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 65, "protein_g": 6, "carbs_g": 5, "fat_g": 3},
+      "default_price_per_kg": 18,
+      "search_terms": ["ymer"]
+    },
+    "kvark": {
+      "display": "Kvark",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 70, "protein_g": 12, "carbs_g": 3, "fat_g": 0.2},
+      "default_price_per_kg": 28,
+      "search_terms": ["kvark"]
+    },
+    "cottage_cheese": {
+      "display": "Cottage cheese",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 100, "protein_g": 12, "carbs_g": 3, "fat_g": 4.5},
+      "default_price_per_kg": 35,
+      "search_terms": ["cottage cheese", "hytteost"]
+    },
+    "maelk": {
+      "display": "Mælk",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 50, "protein_g": 3.5, "carbs_g": 5, "fat_g": 1.5},
+      "default_price_per_kg": 9,
+      "search_terms": ["letmælk", "minimælk", "sødmælk"]
+    },
+    "ost_revet": {
+      "display": "Revet ost",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 380, "protein_g": 25, "carbs_g": 1, "fat_g": 30},
+      "default_price_per_kg": 90,
+      "search_terms": ["revet ost", "mozzarella revet", "cheddar revet"]
+    },
+    "creme_fraiche": {
+      "display": "Creme fraiche",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 180, "protein_g": 2.5, "carbs_g": 3, "fat_g": 18},
+      "default_price_per_kg": 30,
+      "search_terms": ["creme fraiche"]
+    },
+    "smoer": {
+      "display": "Smør",
+      "category": "fedt",
+      "macro_per_100g": {"kcal": 720, "protein_g": 0.5, "carbs_g": 0, "fat_g": 82},
+      "default_price_per_kg": 60,
+      "search_terms": ["smør", "kærgården"]
+    },
+    "olie": {
+      "display": "Madolie",
+      "category": "fedt",
+      "macro_per_100g": {"kcal": 880, "protein_g": 0, "carbs_g": 0, "fat_g": 100},
+      "default_price_per_kg": 25,
+      "search_terms": ["rapsolie", "solsikkeolie", "olivenolie"]
+    },
+    "peanutbutter": {
+      "display": "Peanutbutter",
+      "category": "fedt",
+      "macro_per_100g": {"kcal": 600, "protein_g": 25, "carbs_g": 12, "fat_g": 50},
+      "default_price_per_kg": 50,
+      "search_terms": ["peanutbutter", "jordnøddesmør"]
+    },
+    "havregryn": {
+      "display": "Havregryn",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 370, "protein_g": 13, "carbs_g": 60, "fat_g": 7},
+      "default_price_per_kg": 12,
+      "search_terms": ["havregryn", "fine havregryn"]
+    },
+    "ris": {
+      "display": "Ris",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 350, "protein_g": 7, "carbs_g": 78, "fat_g": 1},
+      "default_price_per_kg": 15,
+      "search_terms": ["ris", "basmati ris", "jasminris"]
+    },
+    "pasta": {
+      "display": "Pasta",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 360, "protein_g": 12, "carbs_g": 72, "fat_g": 1.5},
+      "default_price_per_kg": 12,
+      "search_terms": ["pasta", "spaghetti", "penne"]
+    },
+    "kartofler": {
+      "display": "Kartofler",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 80, "protein_g": 2, "carbs_g": 17, "fat_g": 0.1},
+      "default_price_per_kg": 8,
+      "search_terms": ["kartofler"]
+    },
+    "rugbroed": {
+      "display": "Rugbrød",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 230, "protein_g": 8, "carbs_g": 43, "fat_g": 2},
+      "default_price_per_kg": 18,
+      "search_terms": ["rugbrød"]
+    },
+    "nudler": {
+      "display": "Nudler",
+      "category": "kulhydrat",
+      "macro_per_100g": {"kcal": 360, "protein_g": 12, "carbs_g": 72, "fat_g": 2},
+      "default_price_per_kg": 20,
+      "search_terms": ["nudler", "asiatiske nudler"]
+    },
+    "kidneyboenner_dasee": {
+      "display": "Kidneybønner (dåse)",
+      "category": "boenne",
+      "macro_per_100g": {"kcal": 100, "protein_g": 7, "carbs_g": 14, "fat_g": 0.5},
+      "default_price_per_kg": 18,
+      "search_terms": ["kidneybønner", "røde bønner"]
+    },
+    "sorte_boenner": {
+      "display": "Sorte bønner (dåse)",
+      "category": "boenne",
+      "macro_per_100g": {"kcal": 100, "protein_g": 7, "carbs_g": 14, "fat_g": 0.5},
+      "default_price_per_kg": 18,
+      "search_terms": ["sorte bønner"]
+    },
+    "hvide_boenner": {
+      "display": "Hvide bønner",
+      "category": "boenne",
+      "macro_per_100g": {"kcal": 100, "protein_g": 7, "carbs_g": 14, "fat_g": 0.5},
+      "default_price_per_kg": 18,
+      "search_terms": ["hvide bønner"]
+    },
+    "majs_dase": {
+      "display": "Majs (dåse)",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 85, "protein_g": 3, "carbs_g": 17, "fat_g": 1},
+      "default_price_per_kg": 15,
+      "search_terms": ["majs", "majs på dåse"]
+    },
+    "tomatsauce": {
+      "display": "Tomatsauce",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 35, "protein_g": 1.5, "carbs_g": 7, "fat_g": 0.3},
+      "default_price_per_kg": 10,
+      "search_terms": ["tomatsauce", "passata"]
+    },
+    "hakkede_tomater": {
+      "display": "Hakkede tomater",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 30, "protein_g": 1.5, "carbs_g": 6, "fat_g": 0.2},
+      "default_price_per_kg": 10,
+      "search_terms": ["hakkede tomater"]
+    },
+    "loeg": {
+      "display": "Løg",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 40, "protein_g": 1, "carbs_g": 9, "fat_g": 0.1},
+      "default_price_per_kg": 10,
+      "search_terms": ["løg", "gule løg"]
+    },
+    "gulerod": {
+      "display": "Gulerødder",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 40, "protein_g": 1, "carbs_g": 9, "fat_g": 0.2},
+      "default_price_per_kg": 10,
+      "search_terms": ["gulerødder"]
+    },
+    "frosne_groenter": {
+      "display": "Frosne grøntsager (blanding)",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 50, "protein_g": 2.5, "carbs_g": 8, "fat_g": 0.5},
+      "default_price_per_kg": 20,
+      "search_terms": ["frosne grøntsager", "wokmix", "ærter frosne"]
+    },
+    "aerter_frosne": {
+      "display": "Frosne ærter",
+      "category": "groent",
+      "macro_per_100g": {"kcal": 80, "protein_g": 5, "carbs_g": 14, "fat_g": 0.4},
+      "default_price_per_kg": 20,
+      "search_terms": ["ærter", "frosne ærter"]
+    },
+    "hvidloeg": {
+      "display": "Hvidløg",
+      "category": "krydderi",
+      "macro_per_100g": {"kcal": 150, "protein_g": 6, "carbs_g": 33, "fat_g": 0.5},
+      "default_price_per_kg": 80,
+      "search_terms": ["hvidløg"]
+    },
+    "soja": {
+      "display": "Sojasauce",
+      "category": "krydderi",
+      "macro_per_100g": {"kcal": 60, "protein_g": 8, "carbs_g": 6, "fat_g": 0.1},
+      "default_price_per_kg": 50,
+      "search_terms": ["sojasauce", "kikkoman"]
+    },
+    "krydderier": {
+      "display": "Krydderier (diverse)",
+      "category": "krydderi",
+      "macro_per_100g": {"kcal": 200, "protein_g": 10, "carbs_g": 40, "fat_g": 5},
+      "default_price_per_kg": 100,
+      "search_terms": []
+    },
+    "karrypulver": {
+      "display": "Karrypulver",
+      "category": "krydderi",
+      "macro_per_100g": {"kcal": 320, "protein_g": 14, "carbs_g": 55, "fat_g": 14},
+      "default_price_per_kg": 80,
+      "search_terms": ["karry", "karrypulver"]
+    },
+    "kokosmaelk": {
+      "display": "Kokosmælk",
+      "category": "andet",
+      "macro_per_100g": {"kcal": 200, "protein_g": 2, "carbs_g": 3, "fat_g": 20},
+      "default_price_per_kg": 25,
+      "search_terms": ["kokosmælk"]
+    },
+    "yoghurt_naturel": {
+      "display": "Yoghurt naturel",
+      "category": "mejeri",
+      "macro_per_100g": {"kcal": 65, "protein_g": 5, "carbs_g": 5, "fat_g": 3},
+      "default_price_per_kg": 15,
+      "search_terms": ["yoghurt naturel"]
+    },
+    "mayonnaise": {
+      "display": "Mayonnaise",
+      "category": "fedt",
+      "macro_per_100g": {"kcal": 700, "protein_g": 1, "carbs_g": 1, "fat_g": 77},
+      "default_price_per_kg": 40,
+      "search_terms": ["mayonnaise"]
+    },
+    "banan": {
+      "display": "Banan",
+      "category": "frugt",
+      "macro_per_100g": {"kcal": 90, "protein_g": 1.1, "carbs_g": 22, "fat_g": 0.3},
+      "default_price_per_kg": 15,
+      "search_terms": ["banan", "bananer"]
+    },
+    "aebler": {
+      "display": "Æbler",
+      "category": "frugt",
+      "macro_per_100g": {"kcal": 55, "protein_g": 0.3, "carbs_g": 13, "fat_g": 0.2},
+      "default_price_per_kg": 20,
+      "search_terms": ["æbler"]
+    },
+    "frosne_baer": {
+      "display": "Frosne bær",
+      "category": "frugt",
+      "macro_per_100g": {"kcal": 50, "protein_g": 1, "carbs_g": 10, "fat_g": 0.3},
+      "default_price_per_kg": 35,
+      "search_terms": ["frosne bær"]
+    },
+    "honning": {
+      "display": "Honning",
+      "category": "andet",
+      "macro_per_100g": {"kcal": 310, "protein_g": 0.3, "carbs_g": 80, "fat_g": 0},
+      "default_price_per_kg": 80,
+      "search_terms": ["honning"]
+    },
+    "sukker": {
+      "display": "Sukker",
+      "category": "andet",
+      "macro_per_100g": {"kcal": 400, "protein_g": 0, "carbs_g": 100, "fat_g": 0},
+      "default_price_per_kg": 12,
+      "search_terms": ["sukker"]
+    },
+    "proteinpulver": {
+      "display": "Proteinpulver",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 380, "protein_g": 75, "carbs_g": 8, "fat_g": 5},
+      "default_price_per_kg": 250,
+      "search_terms": ["proteinpulver", "whey"]
+    },
+    "kylling_skiver": {
+      "display": "Kyllingepålæg",
+      "category": "protein",
+      "macro_per_100g": {"kcal": 110, "protein_g": 22, "carbs_g": 1, "fat_g": 2},
+      "default_price_per_kg": 80,
+      "search_terms": ["kyllingepålæg", "kylling i skiver"]
+    }
+  }
+}

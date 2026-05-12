@@ -1,0 +1,7 @@
+requests==2.32.3
+PyYAML==6.0.2
+playwright==1.47.0
+msal==1.31.0
+openai==1.51.0
+python-dotenv==1.0.1
+pulp==2.9.0
